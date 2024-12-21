@@ -1,9 +1,17 @@
+import { useForm } from "react-hook-form";
 import { FaRegUser } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
 import { Link } from "react-router-dom";
 
 const Register = () => {
+
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const onSubmit = data => {
+    const { name, email, password} = data;
+    console.log(name, email, password);
+  };
+
   return (
     <section className="py-10 sm:py-16 lg:py-24">
       <div className="px-4 mx-auto max-w-7xlsm:px-6 lg:px-8">
@@ -16,7 +24,7 @@ const Register = () => {
         <div className="relative max-w-md shadow-lg mx-auto mt-8 md:mt-16">
           <div className="overflow-hidden bg-white rounded-md shadow-md">
             <div className="px-4 py-6 sm:px-8 sm:py-7">
-              <form action="#" method="POST">
+              <form onSubmit={handleSubmit(onSubmit)} action="#" method="POST">
                 <div className="space-y-5">
                   <div>
                     <label className="text-base font-medium text-gray-900">
@@ -31,11 +39,11 @@ const Register = () => {
 
                       <input
                         type="text"
-                        name=""
-                        id=""
+                        {...register("name", { required: true })}
                         placeholder="Enter your full name"
                         className="block w-full py-4 pl-10 pr-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-blue-600 caret-blue-600"
                       />
+                      {errors.name && <span className="text-red-500">This field is required</span>}
                     </div>
                   </div>
 
@@ -52,11 +60,11 @@ const Register = () => {
 
                       <input
                         type="email"
-                        name=""
-                        id=""
+                        {...register("email", { required: true })}
                         placeholder="Enter email to get started"
                         className="block w-full py-4 pl-10 pr-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-blue-600 caret-blue-600"
                       />
+                      {errors.email && <span className="text-red-500">This field is required</span>}
                     </div>
                   </div>
 
@@ -73,11 +81,11 @@ const Register = () => {
 
                       <input
                         type="password"
-                        name=""
-                        id=""
+                        {...register("password", { required: true })}
                         placeholder="Enter your password"
                         className="block w-full py-4 pl-10 pr-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-blue-600 caret-blue-600"
                       />
+                      {errors.password && <span className="text-red-500">This field is required</span>}
                     </div>
                   </div>
                   <div>
