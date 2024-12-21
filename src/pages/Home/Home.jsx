@@ -2,15 +2,13 @@ import { MdAdd } from "react-icons/md";
 import NoteCard from "../../components/Cards/NoteCard";
 import AddEditNotes from "./AddEditNotes";
 import { useState } from "react";
-import ReactModal from "react-modal";
 
 const Home = () => {
-
-    const [openAddEditModal, setOpenAddEditModal] = useState({
-        isShown: false,
-        type: "add",
-        data: null,
-    });
+  const [openAddEditModal, setOpenAddEditModal] = useState({
+    isShown: false,
+    type: "add",
+    data: null,
+  });
 
   return (
     <>
@@ -26,24 +24,25 @@ const Home = () => {
           onPinNote={() => {}}
         ></NoteCard>
       </div>
-      <button className="w-16 h-16 btn flex items-center justify-center rounded-2xl bg-primary hover:bg-blue-600 absolute right-10 bottom-10" onClick={() => {
-        setOpenAddEditModal({ isShown: true, type: "add", data: null });
-      }}>
+      <button
+        className="w-16 h-16 btn flex items-center justify-center rounded-2xl bg-primary hover:bg-blue-600 absolute right-10 bottom-10"
+        onClick={() => document.getElementById("my_modal_3").showModal()}
+      >
         <MdAdd className="text-[32px] text-white"></MdAdd>
       </button>
-      <ReactModal 
-      isOpen={openAddEditModal.isShown}
-      onRequestClose={() => {}}
-      style={{
-        overlay: {
-            backgroundColor: "rgba(0,0,0,2)",
-        },
-      }}
-      contentLabel=""
-      className="w-[40px] max-h-3/4 bg-white rounded-md mx-auto mt-14 p-5 overflow-scroll"
-      >
-      <AddEditNotes></AddEditNotes>
-      </ReactModal>
+      <dialog id="my_modal_3" className="modal">
+        <div className="modal-box">
+          <form method="dialog">
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+              ✕
+            </button>
+          </form>
+          <AddEditNotes
+          type={openAddEditModal.type}
+          noteData={openAddEditModal.data}
+          ></AddEditNotes>
+        </div>
+      </dialog>
     </>
   );
 };

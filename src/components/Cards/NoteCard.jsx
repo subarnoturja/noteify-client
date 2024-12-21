@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { MdCreate, MdDelete, MdOutlinePushPin } from "react-icons/md";
 
 const NoteCard = ({
