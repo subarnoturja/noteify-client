@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import TagInput from "../../components/Input/TagInput";
 
@@ -18,7 +20,7 @@ const AddEditNotes = ({ noteData, type }) => {
     const editNote = async () => {
 
     }
-
+ 
     const handleAddNote = () => {
         if(!title) {
             setError("Please enter the Title")

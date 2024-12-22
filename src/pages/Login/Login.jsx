@@ -4,15 +4,48 @@ import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoEyeOutline } from "react-icons/io5";
 import { TbEyeClosed } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axiosInstance from "../../utils/axiosInstance";
+import { Bounce, toast } from "react-toastify";
 
 const Login = () => {
   const [show, setShow] = useState(false);
+  const [error, setError] = useState(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const navigate = useNavigate();
 
-  const onSubmit = data => {
+  const onSubmit = async (data) => {
     const { email, password } = data;
-    console.log(email, password);
+
+    // Login Api
+    try {
+      const response = await axiosInstance.post('/login', {
+        email: email,
+        password: password,
+      })
+
+      if(response.data && response.data.accessToken){
+        localStorage.setItem("token", response.data.accessToken)
+        navigate('/')
+      }
+    } catch (error) {
+      if(error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message);
+      }
+      else{
+        toast.error('Please Try Again', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+          });
+      }
+    }
   };
 
   const handleShow = () => {
