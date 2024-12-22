@@ -10,6 +10,7 @@ import { Bounce, toast } from "react-toastify";
 
 const Login = () => {
   const [show, setShow] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();

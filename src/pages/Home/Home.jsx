@@ -4,6 +4,7 @@ import AddEditNotes from "./AddEditNotes";
 import { useState } from "react";
 
 const Home = () => {
+  // eslint-disable-next-line no-unused-vars
   const [openAddEditModal, setOpenAddEditModal] = useState({
     isShown: false,
     type: "add",
