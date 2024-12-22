@@ -2,14 +2,67 @@ import { useForm } from "react-hook-form";
 import { FaRegUser } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axiosInstance from "../../utils/axiosInstance";
+import { useState } from "react";
+import { Bounce, toast } from "react-toastify";
 
 const Register = () => {
 
+  const [error, setError] = useState(null);
+
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = data => {
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
     const { name, email, password} = data;
-    console.log(name, email, password);
+
+    // Register Api
+    try {
+      const response = await axiosInstance.post('/create-account', {
+        fullName: name,
+        email: email,
+        password: password,
+      })
+
+      if(response.data && response.data.accessToken){
+        setError(error.response.data.message);
+        return
+      }
+
+      if(response.data && response.data.accessToken) {
+        localStorage.setItem("token", response.data.accessToken)
+        navigate('/')
+      }
+
+    } catch (error) {
+      if(error.response && error.response.data && error.response.data.message) {
+        toast.error('Please Try Again', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+          });
+      }
+      else{
+        toast.success('Successfully Registered', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+          });
+      }
+    }
   };
 
   return (
@@ -91,7 +144,7 @@ const Register = () => {
                   <div>
                     <button
                       type="submit"
-                      className="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-white transition-all duration-200 bg-blue-600 border border-transparent rounded-md focus:outline-none hover:bg-blue-700 focus:bg-blue-700"
+                      className="btn w-full text-base font-semibold text-white transition-all duration-200 bg-blue-600 border border-transparent rounded-md focus:outline-none hover:bg-blue-700 focus:bg-blue-700"
                     >
                       Create account
                     </button>

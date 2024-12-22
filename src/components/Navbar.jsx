@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Link, useNavigate } from "react-router-dom";
 import ProfileInfo from "./Cards/ProfileInfo";
 import SearchBar from "./SearchBar/SearchBar";
@@ -11,6 +12,7 @@ const Navbar = ({ userInfo }) => {
   const onLogout = () => {
     localStorage.clear()
     navigate("/login");
+    window.location.reload();
   };
 
   const handleSearch = () => {

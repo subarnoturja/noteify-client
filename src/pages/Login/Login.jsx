@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaGithub } from "react-icons/fa";
@@ -10,9 +11,12 @@ import { Bounce, toast } from "react-toastify";
 
 const Login = () => {
   const [show, setShow] = useState(false);
-  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
@@ -20,21 +24,23 @@ const Login = () => {
 
     // Login Api
     try {
-      const response = await axiosInstance.post('/login', {
+      const response = await axiosInstance.post("/login", {
         email: email,
         password: password,
-      })
+      });
 
-      if(response.data && response.data.accessToken){
-        localStorage.setItem("token", response.data.accessToken)
-        navigate('/')
+      if (response.data && response.data.accessToken) {
+        localStorage.setItem("token", response.data.accessToken);
+        navigate("/");
+        window.location.reload();
       }
     } catch (error) {
-      if(error.response && error.response.data && error.response.data.message) {
-        setError(error.response.data.message);
-      }
-      else{
-        toast.error('Please Try Again', {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        toast.error("Please Try Again", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -44,7 +50,9 @@ const Login = () => {
           progress: undefined,
           theme: "light",
           transition: Bounce,
-          });
+        });
+      } else {
+        setError(error.response.data.message);
       }
     }
   };
@@ -65,30 +73,34 @@ const Login = () => {
             {...register("email", { required: true })}
             className="w-full px-4 py-3 rounded-md border-2"
           />
-          {errors.email && <span className="text-red-500">This field is required</span>}
+          {errors.email && (
+            <span className="text-red-500">This field is required</span>
+          )}
         </div>
         <div className="space-y-1 text-sm">
           <label className="dark:text-gray-600">Password</label>
-            <div className="flex justify-between items-center">
-              <input
-                type={show ? "text" : "password"}
-                {...register("password", { required: true })}
-                placeholder="Enter password"
-                className="w-full px-4 py-3 rounded-md border-2"
-              />
-              <p className="absolute ml-80" onClick={handleShow}>
-                {show ? (
-                    <TbEyeClosed className="text-xl cursor-pointer"></TbEyeClosed>
-                ) : (
-                    <IoEyeOutline className="text-xl cursor-pointer"></IoEyeOutline>
-                )}
-              </p>
-            </div>   
-            {errors.password && <span className="text-red-500">This field is required</span>}
+          <div className="flex justify-between items-center">
+            <input
+              type={show ? "text" : "password"}
+              {...register("password", { required: true })}
+              placeholder="Enter password"
+              className="w-full px-4 py-3 rounded-md border-2"
+            />
+            <p className="absolute ml-80" onClick={handleShow}>
+              {show ? (
+                <TbEyeClosed className="text-xl cursor-pointer"></TbEyeClosed>
+              ) : (
+                <IoEyeOutline className="text-xl cursor-pointer"></IoEyeOutline>
+              )}
+            </p>
+          </div>
+          {errors.password && (
+            <span className="text-red-500">This field is required</span>
+          )}
         </div>
         <button
           type="submit"
-          className="block w-full p-3 text-center rounded-lg dark:text-gray-50 dark:bg-violet-600"
+          className="btn w-full text-base font-semibold text-white transition-all duration-200 bg-blue-600 border border-transparent rounded-md focus:outline-none hover:bg-blue-700 focus:bg-blue-700"
         >
           Sign in
         </button>

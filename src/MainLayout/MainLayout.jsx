@@ -27,12 +27,12 @@ const MainLayout = () => {
 
   useEffect(() => {
     getUserInfo();
-    return() => {}
+    return() => {};
   }, [])
 
   return (
     <div>
-      <Navbar userInfo={userInfo}></Navbar>
+      <Navbar userInfo={userInfo} />
       <div className="container mx-auto">
         <Outlet></Outlet>
       </div>
