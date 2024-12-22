@@ -2,9 +2,10 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
 import TagInput from "../../components/Input/TagInput";
+import axiosInstance from "../../utils/axiosInstance";
 
 
-const AddEditNotes = ({ noteData, type }) => {
+const AddEditNotes = ({ getAllNotes, noteData, type }) => {
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
@@ -13,7 +14,25 @@ const AddEditNotes = ({ noteData, type }) => {
 
     // Add Note
     const addNewNote = async () => {
+        try{
+            const response = await axiosInstance.post("/add-note", {
+                title,
+                content, 
+                tags,
+            })
 
+            if(response.data && response.data.note){
+                getAllNotes()
+            }
+        }
+        catch (error){
+            if(error.response && 
+                error.response.data &&
+                error.response.data.message
+            ) {
+                setError(error.response.data.message);
+            }
+        }
     }
 
     // Edit Note

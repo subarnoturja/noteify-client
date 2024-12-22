@@ -7,6 +7,7 @@ import axiosInstance from "../../utils/axiosInstance";
 
 const Home = () => {
   const [allNotes, setAllNotes] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   // eslint-disable-next-line no-unused-vars
   // const [openAddEditModal, setOpenAddEditModal] = useState({
@@ -65,6 +66,7 @@ const Home = () => {
             </button>
           </form>
           <AddEditNotes
+          getAllNotes={getAllNotes}
           ></AddEditNotes>
         </div>
       </dialog>
