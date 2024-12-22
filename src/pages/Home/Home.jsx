@@ -1,29 +1,55 @@
+/* eslint-disable no-unused-vars */
 import { MdAdd } from "react-icons/md";
 import NoteCard from "../../components/Cards/NoteCard";
 import AddEditNotes from "./AddEditNotes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axiosInstance from "../../utils/axiosInstance";
 
 const Home = () => {
+  const [allNotes, setAllNotes] = useState([])
+  
   // eslint-disable-next-line no-unused-vars
-  const [openAddEditModal, setOpenAddEditModal] = useState({
-    isShown: false,
-    type: "add",
-    data: null,
-  });
+  // const [openAddEditModal, setOpenAddEditModal] = useState({
+  //   isShown: false,
+  //   type: "add",
+  //   data: null,
+  // });
+
+  // Get All Notes
+  const getAllNotes = async () => {
+    try {
+      const response = await axiosInstance.get("/get-all-notes");
+
+      if(response.data && response.data.notes) {
+        setAllNotes(response.data.notes);
+      }
+    }
+    catch (error){
+      console.log("An unexpected error occurred.")
+    }
+  }
+
+  useEffect(() => {
+      getAllNotes();
+      return() => {};
+    }, [])
 
   return (
     <>
       <div className="grid grid-cols-3 gap-4 mt-8">
-        <NoteCard
-          title="Meeting on 7th April"
-          date="3rd April"
-          content="Meeting on 7th April Meeting on 7th April"
-          tags="#Meeting"
-          isPinned={true}
+        {allNotes.map((item, index) => (
+          <NoteCard
+          key={item._id}
+          title={item.title}
+          date={item.createdOn}
+          content={item.content}
+          tags={item.tags}
+          isPinned={item.isPinned}
           onEdit={() => {}}
           onDelete={() => {}}
           onPinNote={() => {}}
-        ></NoteCard>
+        />
+        ))}
       </div>
       <button
         className="w-16 h-16 btn flex items-center justify-center rounded-2xl bg-primary hover:bg-blue-600 absolute right-10 bottom-10"
@@ -39,8 +65,6 @@ const Home = () => {
             </button>
           </form>
           <AddEditNotes
-          type={openAddEditModal.type}
-          noteData={openAddEditModal.data}
           ></AddEditNotes>
         </div>
       </dialog>
@@ -49,3 +73,8 @@ const Home = () => {
 };
 
 export default Home;
+
+
+
+// type={openAddEditModal.type}
+// noteData={openAddEditModal.data}
