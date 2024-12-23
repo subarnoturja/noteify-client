@@ -1,16 +1,29 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TagInput from "../../components/Input/TagInput";
 import axiosInstance from "../../utils/axiosInstance";
 
 
-const AddEditNotes = ({ getAllNotes, noteData, type }) => {
+const AddEditNotes = ({ getAllNotes, noteData, type, closeModal }) => {
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [tags, setTags] = useState([]);
     const [error, setError] = useState(null);
+
+    useEffect(() => {
+        if(type === "edit" && noteData) {
+            setTitle(noteData.title || "");
+            setContent(noteData.content || "");
+            setTags(noteData.tags || "");
+        }
+        else{
+            setTitle("");
+            setContent("");
+            setTags([]);
+        }
+    }, [type, noteData])
 
     // Add Note
     const addNewNote = async () => {
@@ -22,7 +35,8 @@ const AddEditNotes = ({ getAllNotes, noteData, type }) => {
             })
 
             if(response.data && response.data.note){
-                getAllNotes()
+                getAllNotes();
+                closeModal();
             }
         }
         catch (error){
@@ -90,7 +104,7 @@ const AddEditNotes = ({ getAllNotes, noteData, type }) => {
             {error && <p className="text-red-500 text-xs pt-4">{error}</p>}
             <button className='btn btn-primary w-full font-medium mt-5 p-3' 
             onClick={handleAddNote}
-            >Add</button>
+            >{ type === "edit" ? "Update Note" : "Add Note" }</button>
 
         </div>
     );
