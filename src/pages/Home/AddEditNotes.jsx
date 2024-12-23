@@ -68,7 +68,7 @@ const AddEditNotes = ({ getAllNotes, noteData, type, closeModal }) => {
             if(response.data && response.data.note) {
                 getAllNotes();
                 closeModal();
-                toast.success("Note is edited!", {
+                toast.success("Note is updated!", {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
