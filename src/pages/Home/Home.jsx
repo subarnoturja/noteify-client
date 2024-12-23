@@ -8,34 +8,16 @@ import { Bounce, toast } from "react-toastify";
 import Swal from "sweetalert2";
 import EmptyCard from "../../components/EmptyCard/EmptyCard";
 import AddNotesImg from "../../assets/images/AddNotesImg.jpg"
+import { useOutletContext } from "react-router-dom";
 
 const Home = () => {
-  const [allNotes, setAllNotes] = useState([])
-
   const [openAddEditModal, setOpenAddEditModal] = useState({
     isShown: false,
     type: "add",
     data: null,
   });
 
-  // Get All Notes
-  const getAllNotes = async () => {
-    try {
-      const response = await axiosInstance.get("/get-all-notes");
-
-      if(response.data && response.data.notes) {
-        setAllNotes(response.data.notes);
-      }
-    }
-    catch (error){
-      console.log("An unexpected error occurred.")
-    }
-  }
-
-  useEffect(() => {
-      getAllNotes();
-      return() => {};
-    }, [])
+  const { allNotes } = useOutletContext();
 
   const handleOpenModal = (type, noteDetails = null) => {
     setOpenAddEditModal({
@@ -70,7 +52,6 @@ const Home = () => {
         try {
           const response = await axiosInstance.delete(`/delete-note/${noteId}`);
           if(response.data) {
-            getAllNotes();
             toast.success("Successfully Deleted!", {
               position: "top-right",
               autoClose: 5000,
@@ -128,7 +109,6 @@ const Home = () => {
             </button>
           </form>
           <AddEditNotes
-          getAllNotes={getAllNotes}
           closeModal={handleCloseModal}
           noteData={openAddEditModal.data}
           type={openAddEditModal.type}
@@ -141,8 +121,3 @@ const Home = () => {
 };
 
 export default Home;
-
-
-
-// type={openAddEditModal.type}
-// noteData={openAddEditModal.data}

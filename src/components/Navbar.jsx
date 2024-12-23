@@ -4,7 +4,7 @@ import ProfileInfo from "./Cards/ProfileInfo";
 import SearchBar from "./SearchBar/SearchBar";
 import { useState } from "react";
 
-const Navbar = ({ userInfo }) => {
+const Navbar = ({ userInfo, onSearchNote }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const navigate = useNavigate();
@@ -15,12 +15,22 @@ const Navbar = ({ userInfo }) => {
     window.location.reload();
   };
 
-  const handleSearch = () => {
+  // const handleSearchChange = (e) => {
+  //   setSearchQuery(e.target.value);
+  // };
 
+  const handleSearch = () => {
+    if(searchQuery.trim()) {
+      onSearchNote(searchQuery);
+    }
+    else{
+      onSearchNote("");
+    }
   }
 
   const onClearSearch = () => {
     setSearchQuery("")
+    onSearchNote("")
   }
 
   return (
