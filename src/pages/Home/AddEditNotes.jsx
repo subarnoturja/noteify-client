@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import TagInput from "../../components/Input/TagInput";
 import axiosInstance from "../../utils/axiosInstance";
@@ -14,14 +13,9 @@ const AddEditNotes = ({ getAllNotes, noteData, type, closeModal }) => {
 
     useEffect(() => {
         if(type === "edit" && noteData) {
-            setTitle(noteData.title || "");
-            setContent(noteData.content || "");
-            setTags(noteData.tags || "");
-        }
-        else{
-            setTitle("");
-            setContent("");
-            setTags([]);
+            setTitle(noteData?.title || "");
+            setContent(noteData?.content || "");
+            setTags(noteData?.tags || []);
         }
     }, [type, noteData])
 
@@ -52,6 +46,25 @@ const AddEditNotes = ({ getAllNotes, noteData, type, closeModal }) => {
     // Edit Note
     const editNote = async () => {
 
+        const noteId = noteData._id;
+
+        try {
+            const response = await axiosInstance.put('/edit-note/' + noteId, {
+                title,
+                content,
+                tags,
+            })
+
+            if(response.data && response.data.note) {
+                getAllNotes();
+                closeModal();
+            }
+        }
+        catch (error) {
+            if(error.response && error.response.data && error.response.data.message) {
+                setError(error.response.data.message);
+            }
+        }
     }
  
     const handleAddNote = () => {
@@ -67,7 +80,7 @@ const AddEditNotes = ({ getAllNotes, noteData, type, closeModal }) => {
 
         setError("");
 
-        if(!type === "edit") {
+        if(type === "edit") {
             editNote()
         } else {
             addNewNote()
