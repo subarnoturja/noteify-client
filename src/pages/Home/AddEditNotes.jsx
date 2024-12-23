@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import TagInput from "../../components/Input/TagInput";
 import axiosInstance from "../../utils/axiosInstance";
+import { Bounce, toast } from "react-toastify";
 
 
 const AddEditNotes = ({ getAllNotes, noteData, type, closeModal }) => {
@@ -31,6 +32,17 @@ const AddEditNotes = ({ getAllNotes, noteData, type, closeModal }) => {
             if(response.data && response.data.note){
                 getAllNotes();
                 closeModal();
+                toast.success("Note added successfully!", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Bounce,
+                  });
             }
         }
         catch (error){
@@ -56,6 +68,17 @@ const AddEditNotes = ({ getAllNotes, noteData, type, closeModal }) => {
             if(response.data && response.data.note) {
                 getAllNotes();
                 closeModal();
+                toast.success("Note is edited!", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Bounce,
+                  });
             }
         }
         catch (error) {

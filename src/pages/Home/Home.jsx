@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 import { Bounce, toast } from "react-toastify";
 import Swal from "sweetalert2";
+import EmptyCard from "../../components/EmptyCard/EmptyCard";
+import AddNotesImg from "../../assets/images/AddNotesImg.jpg"
 
 const Home = () => {
   const [allNotes, setAllNotes] = useState([])
@@ -93,7 +95,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="grid grid-cols-3 gap-4 mt-8">
+      {allNotes.length > 0 ? <div className="grid grid-cols-3 gap-4 mt-8">
         {allNotes.map((item) => (
           <NoteCard
           key={item._id}
@@ -107,7 +109,7 @@ const Home = () => {
           onPinNote={() => {}}
         />
         ))}
-      </div>
+      </div> : <EmptyCard imgSrc={AddNotesImg} message="To create your first note Click the 'Add' button" />}
       <button
         className="w-16 h-16 btn flex items-center justify-center rounded-2xl bg-primary hover:bg-blue-600 absolute right-10 bottom-10"
         onClick={() => handleOpenModal("add")}
