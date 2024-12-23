@@ -4,6 +4,8 @@ import NoteCard from "../../components/Cards/NoteCard";
 import AddEditNotes from "./AddEditNotes";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
+import { Bounce, toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const Home = () => {
   const [allNotes, setAllNotes] = useState([])
@@ -54,6 +56,41 @@ const Home = () => {
     handleOpenModal("edit", noteDetails);
   }
 
+  // Delete Note
+  const handleDelete = async (noteId) => {
+    Swal.fire({
+      title: "Are you sure you want to delete this note?",
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+      denyButtonText: "No"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await axiosInstance.delete(`/delete-note/${noteId}`);
+          if(response.data) {
+            getAllNotes();
+            toast.success("Successfully Deleted!", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              transition: Bounce,
+            });
+          }
+        }
+        catch (error) {
+          console.error("failed to delete the note:", error);
+        }
+      } else if (result.isDenied) {
+        Swal.fire("Delete operation is cancelled", "", "info");
+      }
+    });
+  }
+
   return (
     <>
       <div className="grid grid-cols-3 gap-4 mt-8">
@@ -66,7 +103,7 @@ const Home = () => {
           tags={item.tags}
           isPinned={item.isPinned}
           onEdit={() => handleEdit(item)}
-          onDelete={() => {}}
+          onDelete={() => handleDelete(item._id)}
           onPinNote={() => {}}
         />
         ))}

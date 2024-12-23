@@ -46,10 +46,8 @@ const AddEditNotes = ({ getAllNotes, noteData, type, closeModal }) => {
     // Edit Note
     const editNote = async () => {
 
-        const noteId = noteData._id;
-
         try {
-            const response = await axiosInstance.put('/edit-note/' + noteId, {
+            const response = await axiosInstance.put(`/edit-note/${noteData._id}`, {
                 title,
                 content,
                 tags,
@@ -115,7 +113,7 @@ const AddEditNotes = ({ getAllNotes, noteData, type, closeModal }) => {
                 <TagInput tags={tags} setTags={setTags} />
             </div>
             {error && <p className="text-red-500 text-xs pt-4">{error}</p>}
-            <button className='btn btn-primary w-full font-medium mt-5 p-3' 
+            <button className='btn btn-primary w-full font-medium mt-5 p-3 hover:text-white' 
             onClick={handleAddNote}
             >{ type === "edit" ? "Update Note" : "Add Note" }</button>
 
