@@ -9,11 +9,11 @@ import Swal from "sweetalert2";
 import EmptyCard from "../../components/EmptyCard/EmptyCard";
 import AddNotesImg from "../../assets/images/AddNotesImg.jpg"
 import { useOutletContext } from "react-router-dom";
+import NoDataImg from '../../assets/images/NoDataImg.jpg'
 
 const Home = () => {
   
-  const { allNotes, setAllNotes, getAllNotes } = useOutletContext();
-  const [isSearch, setIsSearch] = useState(false);
+  const { allNotes, getAllNotes, isSearch } = useOutletContext();
 
   const [openAddEditModal, setOpenAddEditModal] = useState({
     isShown: false,
@@ -93,7 +93,7 @@ const Home = () => {
           onPinNote={() => {}}
         />
         ))}
-      </div> : <EmptyCard imgSrc={AddNotesImg} message="To create your first note Click the 'Add' button" />}
+      </div> : <EmptyCard imgSrc={isSearch ? NoDataImg  : AddNotesImg} message={isSearch ? `Oops! No Notes Found Matching` : `To create your first note Click the 'Add' button`} />}
       <button
         className="w-16 h-16 btn flex items-center justify-center rounded-2xl bg-primary hover:bg-blue-600 absolute right-10 bottom-10"
         onClick={() => handleOpenModal("add")}

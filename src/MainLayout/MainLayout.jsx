@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+
 import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
@@ -78,7 +78,7 @@ const MainLayout = () => {
     <div>
       <Navbar userInfo={userInfo} onSearchNote={onSearchNote} handleClearSearch={handleClearSearch} />
       <div className="container mx-auto">
-        <Outlet context={{ allNotes, setAllNotes, getAllNotes }}></Outlet>
+        <Outlet context={{ allNotes, setAllNotes, getAllNotes, isSearch }}></Outlet>
       </div>
     </div>
   );
