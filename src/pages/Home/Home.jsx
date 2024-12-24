@@ -2,7 +2,7 @@
 import { MdAdd } from "react-icons/md";
 import NoteCard from "../../components/Cards/NoteCard";
 import AddEditNotes from "./AddEditNotes";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 import { Bounce, toast } from "react-toastify";
 import Swal from "sweetalert2";
@@ -77,6 +77,33 @@ const Home = () => {
     });
   }
 
+  const updateIsPinned = async (noteId, isPinned) => {
+
+    try {
+      const response = await axiosInstance.put(`/update-note-pinned/${noteId}`, {
+        "isPinned" : !isPinned,
+      });
+
+      if(response.data && response.data.note) {
+        getAllNotes();
+        toast.success("Note Pinned Successfully!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <>
       {allNotes.length > 0 ? <div className="grid grid-cols-3 gap-4 mt-8">
@@ -90,7 +117,7 @@ const Home = () => {
           isPinned={item.isPinned}
           onEdit={() => handleEdit(item)}
           onDelete={() => handleDelete(item._id)}
-          onPinNote={() => {}}
+          onPinNote={() => updateIsPinned(item._id)}
         />
         ))}
       </div> : <EmptyCard imgSrc={isSearch ? NoDataImg  : AddNotesImg} message={isSearch ? `Oops! No Notes Found Matching` : `To create your first note Click the 'Add' button`} />}
